@@ -39,6 +39,10 @@ namespace Homework_number_41
                     case CommandExit:
                         isExit = true;
                         break;
+
+                    default:
+                        Console.WriteLine("Такой команды нет в наличии!");
+                        break;
                 }
             }
         }
