@@ -60,7 +60,6 @@ namespace Homework_number_41
                 Console.WriteLine("К сожалению в колоде нет больше карт!");
             }
         }
-
     }
 
     class Deck
