@@ -6,12 +6,12 @@ namespace Homework_number_41
 {
     internal class Program
     {
-        const string CommandAddCard = "1";
-        const string CommandShowCard = "2";
-        const string CommandExit= "3";
-
         static void Main(string[] args)
         {
+            const string CommandAddCard = "1";
+            const string CommandShowCard = "2";
+            const string CommandExit = "3";
+
             Deck deck = new Deck();
             Player player = new Player();
 
@@ -29,7 +29,7 @@ namespace Homework_number_41
                 switch (userInput)
                 {
                     case CommandAddCard:
-                        player.AddCard(deck);
+                        TransmitCard(deck, player);
                         break;
 
                     case CommandShowCard:
@@ -46,6 +46,21 @@ namespace Homework_number_41
                 }
             }
         }
+
+        public static void TransmitCard(Deck deck, Player player)
+        {
+            if (deck.TryGetCards(out Card card) == true)
+            {
+                player.AddCard(card);
+
+                Console.WriteLine("Вы получили одну карту!");
+            }
+            else
+            {
+                Console.WriteLine("К сожалению в колоде нет больше карт!");
+            }
+        }
+
     }
 
     class Deck
@@ -55,6 +70,7 @@ namespace Homework_number_41
         public Deck()
         {
             Create();
+            Shuffle(_cards);
         }
 
         public bool TryGetCards(out Card card)
@@ -87,8 +103,6 @@ namespace Homework_number_41
                     _cards.Add(new Card(ranks[j], suit[i]));
                 }
             }
-
-            Shuffle(_cards);
         }
 
         private void Shuffle(List<Card> strings)
@@ -124,17 +138,11 @@ namespace Homework_number_41
     {
         private List<Card> _cards = new List<Card>();
 
-        public void AddCard(Deck deck)
+        public void AddCard(Card card)
         {
-            if (deck.TryGetCards(out Card card) == true && card != null)
+            if (card != null)
             {
                 _cards.Add(card);
-
-                ShowMessage("Вы получили одну карту!");
-            }
-            else
-            {
-                ShowMessage("К сожалению в колоде нет больше карт!", ConsoleColor.Red);
             }
         }
 
