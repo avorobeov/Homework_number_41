@@ -22,14 +22,16 @@ namespace Homework_number_41
 
             while (isExit == false)
             {
-                ShowMenu();
+                Console.WriteLine($"Что бы взять карту веди {CommandAddCard}\n" +
+                             $"Что бы показать все ваши карты нажмите {CommandShowCard}\n" +
+                             $"Что бы выйти ведите команду {CommandExit}");
 
                 userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
                     case CommandAddCard:
-                        AddCard(deck, player);
+                        player.AddCard(deck);
                         break;
 
                     case CommandShowCard:
@@ -46,41 +48,36 @@ namespace Homework_number_41
                 }
             }
         }
-
-        private static void AddCard(Deck deck, Player player)
-        {
-            Card card;
-
-            if (deck.TryGetCards(out card) == true)
-            {
-                player.AddCard(card);
-
-                ShowMessage("Вы получили одну карту!");
-            }
-            else
-            {
-                ShowMessage("К сожалению в колоде нет больше карт!", ConsoleColor.Red);
-            }
-        }
-
-        private static void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
-        {
-            Console.ForegroundColor = consoleColor;
-            Console.WriteLine(text);
-            Console.ResetColor();
-        }
-
-        private static void ShowMenu()
-        {
-            Console.WriteLine($"Что бы взять карту веди {CommandAddCard}\n" +
-                              $"Что бы показать все ваши карты нажмите {CommandShowCard}\n" +
-                              $"Что бы выйти ведите команду {CommandExit}");
-        }
     }
 
     class Deck
     {
+        private List<Card> _cards = new List<Card>();
+
         public Deck()
+        {
+            Create();
+        }
+
+        public bool TryGetCards(out Card card)
+        {
+            if (_cards.Count() > 0)
+            {
+                card = _cards[0];
+
+                _cards.Remove(card);
+
+                return true;
+            }
+            else
+            {
+                card = null;
+
+                return false;
+            }
+        }
+
+        private void Create()
         {
             string[] ranks = new string[] { "6", "7", "8", "9", "10", "Валет", "Дама", "Кароль", "Туз" };
             string[] suit = new string[] { "Пики", "Черви", "Бубны", "Трефы" };
@@ -92,27 +89,23 @@ namespace Homework_number_41
                     _cards.Add(new Card(ranks[j], suit[i]));
                 }
             }
+
+            Shuffle(_cards);
         }
 
-        private List<Card> _cards = new List<Card>();
-
-        public bool TryGetCards(out Card card)
+        private void Shuffle(List<Card> strings)
         {
-            if (_cards.Count() > 0)
+            Random random = new Random();
+
+            Card tempCard;
+            int indexRandomElement = 0;
+
+            for (int i = 0; i < strings.Count; i++)
             {
-                Random random = new Random();
-
-                card = _cards[random.Next(0, _cards.Count())];
-
-                _cards.Remove(card);
-
-                return true;
-            }
-            else
-            {
-                card = null;
-
-                return false;
+                indexRandomElement = random.Next(0, strings.Count);
+                tempCard = strings[indexRandomElement];
+                strings[indexRandomElement] = strings[i];
+                strings[i] = tempCard;
             }
         }
     }
@@ -133,17 +126,33 @@ namespace Homework_number_41
     {
         private List<Card> _cards = new List<Card>();
 
-        public void AddCard(Card card)
+        public void AddCard(Deck deck)
         {
-            _cards.Add(card);
+            if (deck.TryGetCards(out Card card) == true && card != null)
+            {
+                _cards.Add(card);
+
+                ShowMessage("Вы получили одну карту!");
+            }
+            else
+            {
+                ShowMessage("К сожалению в колоде нет больше карт!", ConsoleColor.Red);
+            }
         }
 
         public void ShowCards()
         {
             for (int i = 0; i < _cards.Count(); i++)
             {
-                Console.WriteLine($"{_cards[i].Suit} {_cards[i].Rank}");
+                ShowMessage($"{_cards[i].Suit} {_cards[i].Rank}");
             }
+        }
+
+        private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
+        {
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine(text);
+            Console.ResetColor();
         }
     }
 }
