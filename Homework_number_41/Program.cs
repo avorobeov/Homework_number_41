@@ -29,7 +29,7 @@ namespace Homework_number_41
                 switch (userInput)
                 {
                     case CommandAddCard:
-                        TransmitCard(deck, player);
+                        player.AddCard(deck.GetCard());
                         break;
 
                     case CommandShowCard:
@@ -46,20 +46,6 @@ namespace Homework_number_41
                 }
             }
         }
-
-        public static void TransmitCard(Deck deck, Player player)
-        {
-            if (deck.TryGetCards(out Card card) == true)
-            {
-                player.AddCard(card);
-
-                Console.WriteLine("Вы получили одну карту!");
-            }
-            else
-            {
-                Console.WriteLine("К сожалению в колоде нет больше карт!");
-            }
-        }
     }
 
     class Deck
@@ -72,21 +58,21 @@ namespace Homework_number_41
             Shuffle();
         }
 
-        public bool TryGetCards(out Card card)
+        public Card GetCard()
         {
+            Card card = null;
+
             if (_cards.Count() > 0)
             {
                 card = _cards[0];
 
                 _cards.Remove(card);
 
-                return true;
+                return card;
             }
             else
             {
-                card = null;
-
-                return false;
+                return card;
             }
         }
 
@@ -142,6 +128,12 @@ namespace Homework_number_41
             if (card != null)
             {
                 _cards.Add(card);
+
+                ShowMessage("Вы получили одну карту!");
+            }
+            else
+            {
+                ShowMessage("К сожалению в колоде нет больше карт!", ConsoleColor.Red);
             }
         }
 
