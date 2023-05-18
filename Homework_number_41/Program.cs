@@ -69,7 +69,7 @@ namespace Homework_number_41
         public Deck()
         {
             Create();
-            Shuffle(_cards);
+            Shuffle();
         }
 
         public bool TryGetCards(out Card card)
@@ -104,19 +104,19 @@ namespace Homework_number_41
             }
         }
 
-        private void Shuffle(List<Card> strings)
+        private void Shuffle()
         {
             Random random = new Random();
 
             Card tempCard;
             int indexRandomElement = 0;
 
-            for (int i = 0; i < strings.Count; i++)
+            for (int i = 0; i < _cards.Count; i++)
             {
-                indexRandomElement = random.Next(0, strings.Count);
-                tempCard = strings[indexRandomElement];
-                strings[indexRandomElement] = strings[i];
-                strings[i] = tempCard;
+                indexRandomElement = random.Next(0, _cards.Count);
+                tempCard = _cards[indexRandomElement];
+                _cards[indexRandomElement] = _cards[i];
+                _cards[i] = tempCard;
             }
         }
     }
