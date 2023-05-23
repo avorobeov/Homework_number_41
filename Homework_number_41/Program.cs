@@ -67,13 +67,9 @@ namespace Homework_number_41
                 card = _cards[0];
 
                 _cards.Remove(card);
+            }
 
-                return card;
-            }
-            else
-            {
-                return card;
-            }
+            return card;
         }
 
         private void Create()
