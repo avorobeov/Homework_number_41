@@ -29,7 +29,7 @@ namespace Homework_number_41
                 switch (userInput)
                 {
                     case CommandAddCard:
-                        player.AddCard(deck.GetCard());
+                        player.AddCard(deck.GiveCard());
                         break;
 
                     case CommandShowCard:
@@ -58,7 +58,7 @@ namespace Homework_number_41
             Shuffle();
         }
 
-        public Card GetCard()
+        public Card GiveCard()
         {
             Card card = null;
 
